@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- Include html2pdf library for direct PDF downloading -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+:root {
+  --bg: #fdfbf7;
+  --text: #2c2523;
+  --accent: #ff6b6b;
+  --accent-hover: #fa5252;
+  --card-bg: #ffffff;
+  --border: #f0eae1;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+.view-container {
+  max-width: 700px;
+  width: 100%;
+}
+
+/* Common Card Box */
+.card-box {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 40px 30px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+/* Lock Screen */
+#lock-screen {
+  text-align: center;
+}
+
+#lock-screen h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+#lock-screen p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+input[type="password"], input[type="text"], textarea {
+  width: 100%;
+  padding: 14px;
+  font-family: inherit;
+  font-size: 15px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+input[type="password"], input[type="text"] {
+  text-align: center;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--accent);
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+button:hover {
+  background: var(--accent-hover);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  background: #e2dcd4;
+  color: var(--text);
+  margin-top: 10px;
+}
+
+.btn-secondary:hover {
+  background: #d4cec4;
+}
+
+#error-msg {
+  color: var(--accent);
+  font-size: 13px;
+  margin-top: 10px;
+  min-height: 18px;
+}
+
+.lock-bottom-note {
+  margin-top: 24px;
+  font-size: 12px;
+  color: #888;
+  letter-spacing: 0.05em;
+}
+
+.lock-bottom-note strong {
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Customizer Screen */
+#customizer-screen {
+  display: none;
+  text-align: left;
+}
+
+#customizer-screen h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #666;
+}
+
+.file-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.image-preview-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.preview-thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Main Gift Content */
+#main-content {
+  display: none;
+  text-align: center;
+  padding: 10px 0;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+.message-box {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 30px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  color: #444;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  text-align: left;
+}
+
+.handwritten {
+  font-family: 'Caveat', cursive;
+  font-size: 28px;
+  color: var(--accent);
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Memories Grid */
+.memories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.memory-card {
+  background: white;
+  padding: 12px 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+  transform: rotate(-1deg);
+  transition: transform 0.2s;
+  text-align: center;
+}
+
+.memory-card:nth-child(even) {
+  transform: rotate(1.5deg);
+}
+
+.memory-card:hover {
+  transform: scale(1.03) rotate(0deg);
+}
+
+.memory-img {
+  width: 100%;
+  height: 140px;
+  background: #f7f3ee;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.memory-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.memory-img span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #887;
+}
+
+.memory-card p {
+  font-size: 13px;
+  color: #555;
+}
+</style>
+</head>
+<body>
+
+<div class="view-container">
+
+  <!-- Lock Screen -->
+  <div id="lock-screen" class="card-box">
+    <h1>Hey there</h1>
+    <p>Enter the secret passcode to unlock your gift.</p>
+    <input type="password" id="passcode" placeholder="Enter passcode" autocomplete="off">
+    <button onclick="checkPasscode()">Open Gift</button>
+    <div id="error-msg"></div>
+    <button class="btn-secondary" onclick="showCustomizer()">Customize Card & Password</button>
+    <div class="lock-bottom-note">
+      <strong>test project | default password: birthday</strong>
+    </div>
+  </div>
+
+  <!-- Customizer Screen -->
+  <div id="customizer-screen" class="card-box">
+    <h2>Customize Your Gift Card</h2>
+    <div class="form-group">
+      <label for="input-secret">Secret Passcode</label>
+      <input type="text" id="input-secret" value="birthday">
+    </div>
+    <div class="form-group">
+      <label for="input-title">Card Title</label>
+      <input type="text" id="input-title" value="Happy Birthday!">
+    </div>
+    <div class="form-group">
+      <label for="input-message">Main Message</label>
+      <textarea id="input-message" rows="3">I wanted to put together something small just to remind you how awesome you are. Hope you have the absolute best day today, eat lots of good food, and get spoiled rotten!</textarea>
+    </div>
+    <div class="form-group">
+      <label for="input-signature">Sign-off</label>
+      <input type="text" id="input-signature" value="Best wishes always">
+    </div>
+
+    <!-- Memory Customization Inputs -->
+    <div class="form-group">
+      <label>Memory 1 (Caption & Image)</label>
+      <input type="text" id="mem1-text" value="Countless late night chats">
+      <input type="file" accept="image/*" id="mem1-file" onchange="previewImage(event, 1)">
+    </div>
+    <div class="form-group">
+      <label>Memory 2 (Caption & Image)</label>
+      <input type="text" id="mem2-text" value="Sharing weird music recs">
+      <input type="file" accept="image/*" id="mem2-file" onchange="previewImage(event, 2)">
+    </div>
+    <div class="form-group">
+      <label>Memory 3 (Caption & Image)</label>
+      <input type="text" id="mem3-text" value="Chasing random ideas">
+      <input type="file" accept="image/*" id="mem3-file" onchange="previewImage(event, 3)">
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn-secondary" onclick="backToLock()">Back</button>
+      <button onclick="saveCustomizations()">Save & View</button>
+    </div>
+  </div>
+
+  <!-- Main Gift Content -->
+  <div id="main-content">
+    <div id="pdf-content" style="background: var(--bg); padding: 20px; border-radius: 16px;">
+      <h2 id="display-title">Happy Birthday!</h2>
+      
+      <div class="message-box">
+        <p id="display-message">I wanted to put together something small just to remind you how awesome you are. Hope you have the absolute best day today, eat lots of good food, and get spoiled rotten!</p>
+        <div class="handwritten" id="display-signature">Best wishes always</div>
+      </div>
+
+      <div class="memories">
+        <div class="memory-card">
+          <div class="memory-img" id="display-img-1"><span>Memory 01</span></div>
+          <p id="display-text-1">Countless late night chats</p>
+        </div>
+        <div class="memory-card">
+          <div class="memory-img" id="display-img-2"><span>Memory 02</span></div>
+          <p id="display-text-2">Sharing weird music recs</p>
+        </div>
+        <div class="memory-card">
+          <div class="memory-img" id="display-img-3"><span>Memory 03</span></div>
+          <p id="display-text-3">Chasing random ideas</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px; display: flex; gap: 10px;">
+      <button class="btn-secondary" onclick="showCustomizer()">Edit Card</button>
+      <button onclick="downloadPDF()">Download PDF</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let SECRET = "birthday";
+  let memoryImages = { 1: null, 2: null, 3: null };
+
+  function previewImage(event, index) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        memoryImages[index] = e.target.result;
+      }
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function checkPasscode() {
+    const input = document.getElementById('passcode').value.trim().toLowerCase();
+    const error = document.getElementById('error-msg');
+    
+    if (input === SECRET.toLowerCase()) {
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+    } else {
+      error.textContent = "Oops, try again!";
+      document.getElementById('passcode').value = "";
+    }
+  }
+
+  document.getElementById('passcode').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      checkPasscode();
+    }
+  });
+
+  function showCustomizer() {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('main-content').style.display = 'none';
+    document.getElementById('customizer-screen').style.display = 'block';
+  }
+
+  function backToLock() {
+    document.getElementById('customizer-screen').style.display = 'none';
+    document.getElementById('lock-screen').style.display = 'block';
+  }
+
+  function saveCustomizations() {
+    SECRET = document.getElementById('input-secret').value.trim();
+    document.getElementById('display-title').textContent = document.getElementById('input-title').value;
+    document.getElementById('display-message').textContent = document.getElementById('input-message').value;
+    document.getElementById('display-signature').textContent = document.getElementById('input-signature').value;
+
+    // Update memories text and images
+    for (let i = 1; i <= 3; i++) {
+      document.getElementById(`display-text-${i}`).textContent = document.getElementById(`mem${i}-text`).value;
+      const imgContainer = document.getElementById(`display-img-${i}`);
+      if (memoryImages[i]) {
+        imgContainer.innerHTML = `<img src="${memoryImages[i]}" alt="Memory ${i}">`;
+      }
+    }
+    
+    document.getElementById('customizer-screen').style.display = 'none';
+    document.getElementById('lock-screen').style.display = 'block';
+    document.getElementById('passcode').value = "";
+    document.getElementById('error-msg').textContent = "Password updated! Enter it to unlock.";
+  }
+
+  function downloadPDF() {
+    const element = document.getElementById('pdf-content');
+    const options = {
+      margin:       10,
+      filename:     'birthday-card.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().from(element).set(options).save();
+  }
+</script>
+
+</body>
+</html>
+
+
+
+
+
