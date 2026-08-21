@@ -43,7 +43,6 @@ body {
   width: 100%;
 }
 
-/* Common Card Box */
 .card-box {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -52,7 +51,7 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.03);
 }
 
-/* Lock Screen */
+
 #lock-screen {
   text-align: center;
 }
@@ -140,7 +139,6 @@ button:active {
   color: var(--text);
 }
 
-/* Customizer Screen */
 #customizer-screen {
   display: none;
   text-align: left;
@@ -191,7 +189,6 @@ button:active {
   margin-top: 20px;
 }
 
-/* Main Gift Content */
 #main-content {
   display: none;
   text-align: center;
@@ -231,7 +228,6 @@ h2 {
   text-align: center;
 }
 
-/* Memories Grid */
 .memories {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -293,7 +289,6 @@ h2 {
 
 <div class="view-container">
 
-  <!-- Lock Screen -->
   <div id="lock-screen" class="card-box">
     <h1>Hey there</h1>
     <p>Enter the secret passcode to unlock your gift.</p>
@@ -306,7 +301,6 @@ h2 {
     </div>
   </div>
 
-  <!-- Customizer Screen -->
   <div id="customizer-screen" class="card-box">
     <h2>Customize Your Gift Card</h2>
     <div class="form-group">
@@ -326,7 +320,6 @@ h2 {
       <input type="text" id="input-signature" value="Best wishes always">
     </div>
 
-    <!-- Memory Customization Inputs -->
     <div class="form-group">
       <label>Memory 1 (Caption & Image)</label>
       <input type="text" id="mem1-text" value="Countless late night chats">
@@ -349,7 +342,6 @@ h2 {
     </div>
   </div>
 
-  <!-- Main Gift Content -->
   <div id="main-content">
     <div id="pdf-content" style="background: var(--bg); padding: 20px; border-radius: 16px;">
       <h2 id="display-title">Happy Birthday!</h2>
