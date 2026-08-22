@@ -426,7 +426,6 @@ h2 {
     document.getElementById('display-message').textContent = document.getElementById('input-message').value;
     document.getElementById('display-signature').textContent = document.getElementById('input-signature').value;
 
-    // Update memories text and images
     for (let i = 1; i <= 3; i++) {
       document.getElementById(`display-text-${i}`).textContent = document.getElementById(`mem${i}-text`).value;
       const imgContainer = document.getElementById(`display-img-${i}`);
